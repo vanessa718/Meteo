@@ -1,0 +1,13 @@
+.morpion--table td {
+    height:10em;
+    width:10em;
+    border: 1px solid black;
+}
+
+.render--player {
+    color: rgb(175, 8, 8);
+    font-size: 50px;
+    font-weight: 900;
+}
+.rouge{color:red}
+.vert{color:green}
