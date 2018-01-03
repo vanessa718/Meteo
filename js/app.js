@@ -1,74 +1,59 @@
 (function main(){
-var xhr=createXHR();	
-$('#mybtn').on('click',function(){
-	//getJson();
+var inputVille= "";
+var mymap = L.map('mapid').setView([45,3], 13);
+$('#selec').on('click',function(){
+
 	getJqAjax();
 })
+
 function getJqAjax(){
-	var mylat = $('#mylat').val();
-	var mylng = $('#mylng').val();
+	inputVille="";
+	inputVille=$("#ville").val();
+
 	$.ajax({
-		url:"https://www.prevision-meteo.ch/services/json/lat="+ mylat +"lng="+mylng+"",
+		url:"http://api.openweathermap.org/data/2.5/weather?q="+inputVille+"&units=metric&APPID=6b0093ca3ed371f163ae90b3957b8b98",
 		datatype:'json',
 		success: function(data){
-			console.log("success");
-			console.log(data.fcst_day_0.condition)
+			console.log(data);
+			$(".city").html(data.name);
+			$("#temp").html(data.main.temp);
+			$("#temp_min").html(data.main.temp_min);
+			$("#temp_max").html(data.main.temp_max);
+			$("#pression").html(data.main.pressure);
+			$("#hum").html(data.main.humidity);
+			$("#lon").html(data.coord.lon);
+			$("#lat").html(data.coord.lat);
+			$(".icons").html("<img src='http://openweathermap.org/img/w/"+data.weather[0].icon+".png' alt='Icon'.>");
+			carte(data.coord.lat,data.coord.lon);
 		},
 		error: function(){
-			console.log("no way, i'm fucked");
+			$(".city").html("no city, sorry");
+			$("#temp").html("0");
+			$("#temp_min").html("0");
+			$("#temp_max").html("0");
+			$("#pression").html("0");
+			$("#hum").html("0");
+			$("#lon").html("0");
+			$("#lat").html("0");
+		
 		}
 	})
-}
-function getJson(){
-	var mylat = $('#mylat').val();
-	var mylng = $('#mylng').val();
+}		
 
-	var myurl = "https://www.prevision-meteo.ch/services/json/lat="+ mylat +"lng="+mylng;
-	//var myurl = "http://www.geobi.fr/dev/googleplace/places.php?lat="+ mylat +"&lon="+mylng+"&type=pharmacy&radius=10000";
-	//"http://www.geobi.fr/dev/googleplace/places.php?lat=44.334862&lon=2.435056&type=pharmacy&radius=10000"
-	var objJSON;
-	
-	xhr.open("GET", myurl,true);
+function carte(newLat,newLon){
+		mymap.setView([newLat,newLon],13);
 
-	xhr.onreadystatechange=function()
-	{
-				
-		if (xhr.readyState == 4) 
-		{
-			if (xhr.status != 404) 
-			{
-				var maMeteo=eval("(" + xhr.responseText + ")");
-				var myDiv = $('#meteo');
-				var contenu ="";
-				//var contenu = maMeteo.
-				var myCondition = maMeteo.fcst_day_0.condition;
-				alert(mycondition);
-			}
-		}
-	}
-	xhr.send(null);
+		L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+    	attribution: '',
+    	maxZoom: 18,
+    	id: 'mapbox.streets',
+    	accessToken: 'your.mapbox.access.token'
+		}).addTo(mymap);
+		
+		L.marker([newLat,newLon]).addTo(mymap)
+    	.bindPopup('Vous êtes ici!')
+    	.openPopup();
 }
 
-function createXHR() 
-{
-    var request = false;
-        try {
-            request = new ActiveXObject('Msxml2.XMLHTTP');
-        }
-        catch (err2) {
-            try {
-                request = new ActiveXObject('Microsoft.XMLHTTP');
-            }
-            catch (err3) {
-		try {
-			request = new XMLHttpRequest();
-		}
-		catch (err1) 
-		{
-			request = false;
-		}
-            }
-        }
-    return request;
-}
 })();
+

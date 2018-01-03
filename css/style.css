@@ -1,13 +1,40 @@
-.morpion--table td {
-    height:10em;
-    width:10em;
-    border: 1px solid black;
+body{
+	background-image: url('img/clouds.jpg');
+	background-size: cover;
 }
-
-.render--player {
-    color: rgb(175, 8, 8);
-    font-size: 50px;
-    font-weight: 900;
+.wrapper{
+	display: block;
+	justify-content: center;
+	/*background-color: #d6d7d8;
+	/*height: 650px;*/
+	overflow: hidden;
 }
-.rouge{color:red}
-.vert{color:green}
+.box{
+	font-size: 25px; 
+	margin-top: 10%;
+	margin-left: 5%;
+	display: flex;
+	justify-content: space-around;
+}
+ul{
+	list-style: none;
+}
+.rechercher{
+	margin-top: 5%;
+	text-align: center;
+}
+#mapid{
+	height: 320px;
+	width: 420px;
+	background-color: #DDDDDD;
+}
+.mesures{
+	font-family: 'Marck Script', cursive;
+}
+.city{
+	font-size: 50px;
+	font-weight: bold;
+}
+input{
+	width:250px;
+}
